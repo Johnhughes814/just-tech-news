@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
     include: [
       {
         model: Comment,
-        attributes: ["id", "comment_text", "post_id", "user-id", "created_at"],
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
         include: {
           model: User,
           attributes: ["username"],
@@ -38,6 +38,7 @@ router.get("/", (req, res) => {
 
       res.render("homepage", {
         posts,
+        loggedIn: req.session.loggedIn,
       });
     })
     .catch((err) => {
@@ -46,6 +47,7 @@ router.get("/", (req, res) => {
     });
 });
 
+// get single post
 router.get("/post/:id", (req, res) => {
   Post.findOne({
     where: {
@@ -84,11 +86,12 @@ router.get("/post/:id", (req, res) => {
         return;
       }
 
-      // serialize the data
       const post = dbPostData.get({ plain: true });
 
-      // pass data to template
-      res.render("single-post", { post });
+      res.render("single-post", {
+        post,
+        loggedIn: req.session.loggedIn,
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -103,22 +106,6 @@ router.get("/login", (req, res) => {
   }
 
   res.render("login");
-});
-
-router.get("/post/:id", (req, res) => {
-  const post = {
-    id: 1,
-    post_url: "https://handlebarsjs.com/guide/",
-    title: "Handlebars Docs",
-    created_at: new Date(),
-    vote_count: 10,
-    comments: [{}, {}],
-    user: {
-      username: "test_user",
-    },
-  };
-
-  res.render("single-post", { post });
 });
 
 module.exports = router;
