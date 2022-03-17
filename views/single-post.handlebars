@@ -1,11 +1,4 @@
-<ol class="post-list">
-  {{#each posts as |post|}}
-  <li>
-    {{> post-info post }}
-  </li>
-  {{/each}}
-</ol>
-
+{{> post-info post}}
 
 {{#if loggedIn}}
 <form class="comment-form">
@@ -21,7 +14,6 @@
 {{/if}}
 
 {{> comments post.comments}}
-
 
 {{#if loggedIn}}
 <script src="/javascript/comment.js"></script>
